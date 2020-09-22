@@ -10,16 +10,20 @@
 </head>
 <body>
 	<div align="center">
+		<%-- <c:if test="${not empty message}">
+   Error: ${message}
+</c:if> --%>
+		<h1>${message}</h1>
 		<h2>User Registration</h2>
-		<form:form action="login" method="get" modelAttribute="login">	
-			<form:label path="uName">Password:</form:label>
-			<form:password path="uName" />
+		<form:form action="login" method="get" modelAttribute="login">
+			<form:label path="userName">USER NAME:</form:label>
+			<form:password path="userName" />
 			<br />
 
-			<form:label path="password">Password:</form:label>
-			<form:password path="password" />
+			<form:label path="passWord">PASSWORD:</form:label>
+			<form:password path="passWord" />
 			<br />
-			
+
 			<form:button>Login</form:button>
 		</form:form>
 	</div>

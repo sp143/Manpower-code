@@ -9,7 +9,7 @@ import com.sp.manpwr.model.Consumer;
 
 @Repository
 public interface ConsumerRepository extends JpaRepository<Consumer, Long> {
-	@Query(value = "FROM Consumer WHERE email=:email",nativeQuery = true)
-	void findUserByEmail(@Param("email") String email);
+	@Query(value = "SELECT * FROM consumer_m WHERE email=:email",nativeQuery = true)
+	Consumer findUserByEmail(@Param("email") String email);
 
 }

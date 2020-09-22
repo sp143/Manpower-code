@@ -67,7 +67,7 @@ public class ConsumerService {
 
 	public Consumer findUserByEmail(String email) {
 		// TODO Auto-generated method stub
-		consumerRepository.findUserByEmail(email);
+		Consumer consumer=consumerRepository.findUserByEmail(email);
 		return null;
 	}
 }

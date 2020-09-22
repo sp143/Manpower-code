@@ -38,11 +38,11 @@ button {
 	<div align="center">
 		<h2>User Registration</h2>
 		<form:form action="register" method="post" modelAttribute="consumer">
-			<form:label path="fname">First name:</form:label>
-			<form:input path="fname" />
+			<form:label path="fName">First name:</form:label>
+			<form:input path="fName" />
 			<br />
-			<form:label path="lname">Last name:</form:label>
-			<form:input path="lname" />
+			<form:label path="lName">Last name:</form:label>
+			<form:input path="lName" />
 			<br />
 
 			<form:label path="email">E-mail:</form:label>
@@ -50,27 +50,31 @@ button {
 			<br />
 
 			<form:label path="phNo">Phone No:</form:label>
-			<form:input path="phNo" />
+			<form:input path="phNo" /> 
 			<br />
 
-			<form:label path="uName">Password:</form:label>
-			<form:password path="uName" />
+			<form:label path="uName">UserName:</form:label>
+			<form:input path="uName" />
 			<br />
 
 			<form:label path="password">Password:</form:label>
 			<form:password path="password" />
 			<br />
 
-			<form:label path="birthday">Birthday (yyyy-mm-dd):</form:label>
-			<form:input path="birthday" />
+			<form:label path="DOB">Birthday (yyyy-mm-dd):</form:label>
+			<form:input path="DOB" />
+			<br />
+			
+			<form:label path="adhaarid">Aadhaar:</form:label>
+			<form:input path="adhaarid" />
 			<br />
 
-			<form:label path="gender">Gender:</form:label>
-			<form:radiobutton path="gender" value="Male" />Male
-			<form:radiobutton path="gender" value="Female" />Female<br />
+			<form:label path="Gender">Gender:</form:label>
+			<form:radiobutton path="Gender" value="Male" />Male
+			<form:radiobutton path="Gender" value="Female" />Female<br />
 
 			<form:label path="profession">Profession:</form:label>
-			<form:select path="profession" />
+			<form:input path="profession" />
 			<br />
 
 
