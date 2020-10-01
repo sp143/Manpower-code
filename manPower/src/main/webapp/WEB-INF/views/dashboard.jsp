@@ -9,6 +9,6 @@
 <body>
 <h1>login successfull</h1>
 Wecome to user dash board
-${fname}
+${fname}  ${message}
 </body>
 </html>

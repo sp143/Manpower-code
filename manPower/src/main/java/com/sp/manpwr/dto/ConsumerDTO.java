@@ -1,6 +1,5 @@
 package com.sp.manpwr.dto;
 
-import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -25,8 +24,35 @@ public class ConsumerDTO {
 	private String password;
 	private String address;
 	private String adhaarid;
-	private Date DOB;
-	private Date Gender;
+	private String DOB;
+	private String Gender;
+	private Boolean checkboxcondition;
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public Boolean getCheckboxcondition() {
+		return checkboxcondition;
+	}
+
+	public void setCheckboxcondition(Boolean checkboxcondition) {
+		this.checkboxcondition = checkboxcondition;
+	}
+
+	public String getGender() {
+		return Gender;
+	}
+
+	public void setGender(String gender) {
+		Gender = gender;
+	}
+
 	private String profession;
 
 	public String getfName() {
@@ -77,20 +103,12 @@ public class ConsumerDTO {
 		this.adhaarid = adhaarid;
 	}
 
-	public Date getDOB() {
+	public String getDOB() {
 		return DOB;
 	}
 
-	public void setDOB(Date dOB) {
+	public void setDOB(String dOB) {
 		DOB = dOB;
-	}
-
-	public Date getGender() {
-		return Gender;
-	}
-
-	public void setGender(Date gender) {
-		Gender = gender;
 	}
 
 	public String getProfession() {

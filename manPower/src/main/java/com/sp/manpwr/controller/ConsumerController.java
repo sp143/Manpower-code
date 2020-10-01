@@ -1,9 +1,12 @@
 package com.sp.manpwr.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,23 +26,28 @@ public class ConsumerController {
 	ConsumerService consumerService;
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public String createUser(@ModelAttribute(name = "consumer") ConsumerDTO consumerdto, BindingResult bindingResult,
-			Model model) {
+	public String createUser(@Validated @ModelAttribute(name = "consumer") ConsumerDTO consumerdto,
+			BindingResult bindingResult, Model model) {
 		String retu = "registration";
-		Consumer consExist = consumerService.findUserByEmail(consumerdto.getEmail());
-		if (consExist != null) {
-			bindingResult.rejectValue("email", "error.user", "This email already exists!");
+		Optional<Consumer> consExist = consumerService.findUserByEmail(consumerdto.getEmail());
+		if (consExist.isPresent()) {
+			System.out.println("hello binding");
+		//	bindingResult.rejectValue("email", "error.consumer", "This email already exists!");
+			 bindingResult.rejectValue("email", "message", "This email already exists!");
 		}
+
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("message", "This email already exists!!");
 			retu = "registration";
 		} else {
 			try {
-				Consumer consumer = new Consumer();
-				consumerService.createOrUpdateConsumer(consumer);
+				
+				Consumer newDto=consumerService.createOrUpdateConsumer(consumerdto);
 				model.addAttribute("message", "Consumer has been registered successfully!");
-				model.addAttribute("consumer", consumer);
+				model.addAttribute("consumer", newDto);
 				retu = "successRegistration";
 			} catch (Exception e) {
+				model.addAttribute("message", "Problem in registration");
 				retu = "error";
 			}
 		}
@@ -59,22 +67,26 @@ public class ConsumerController {
 	public String login(@ModelAttribute(name = "login") LoginDTO loginDTO, BindingResult bindingResult, Model model) {
 
 		String retu = "login";
-		Consumer consExist = null;
+		Optional<Consumer> consExist = null;
+		Consumer consumer=null;
 		try {
-			consExist = consumerService.findUserByEmail(loginDTO.getUserName());
+			consExist = consumerService.loginValidation(loginDTO.getUserName(),loginDTO.getPassWord());
+			consumer=consExist.get();
 		} catch (Exception exe) {
 			model.addAttribute("message", "Loging if u have account ?");
 			retu = "loginPage";
 		}
-		if (consExist != null) {
+		if (consumer != null) {
 			retu = "dashboard";
-			model.addAttribute("fname", consExist.getfName());
-			// model.addAttribute("message", "Loging if u have account ?");
+			model.addAttribute("fname", consumer.getfName());
+		    model.addAttribute("message", "welcome to Manpower Official");
+		} else {
+			System.out.println("Entered  in controller foe login =");
+			System.out.println(" user name for login=" + loginDTO.getUserName());
+			// model.addAttribute("login", new LoginDTO());
+			model.addAttribute("message", "Invalid credentials, Try again!");
+			retu = "loginPage";
 		}
-		System.out.println("Entered  in controller foe login =");
-		System.out.println(" user name for login=" + loginDTO.getUserName());
-		model.addAttribute("login", new LoginDTO());
-		model.addAttribute("message", "Try again!");
 		return retu;
 	}
 
@@ -90,12 +102,10 @@ public class ConsumerController {
 	}
 
 	@RequestMapping(value = { "/error" }, method = RequestMethod.GET)
-	public ModelAndView errorPage() {
+	public String errorPage(Model model) {
 		System.out.println("Entered  in Error");
-		ModelAndView model = new ModelAndView();
-
-		model.setViewName("error");
-		return model;
+		model.addAttribute("message", "Problem in registration");
+		return "error";
 	}
 
 }

@@ -2,6 +2,8 @@ package com.sp.manpwr.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,14 +11,23 @@ import javax.persistence.Table;
 @Table(name = "Login_M")
 public class Login {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String email;
-	@Column(nullable = false, unique = true)
+	@Column(name = "userName", nullable = false, unique = true)
 	private String userName;
-	@Column(nullable = false, unique = true)
+	@Column(name = "passWord", nullable = false, unique = true)
 	private String passWord;
-	private String userMasterId;
-	
+	private Long userMasterId;
+	private String userRole;
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 
 	public Long getId() {
 		return id;
@@ -50,11 +61,11 @@ public class Login {
 		this.passWord = passWord;
 	}
 
-	public String getUserMasterId() {
+	public Long getUserMasterId() {
 		return userMasterId;
 	}
 
-	public void setUserMasterId(String userMasterId) {
-		this.userMasterId = userMasterId;
+	public void setUserMasterId(Long long1) {
+		this.userMasterId = long1;
 	}
 }

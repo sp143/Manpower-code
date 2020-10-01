@@ -1,5 +1,7 @@
 package com.sp.manpwr.model;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,6 +32,26 @@ public class Labour_m {
 	private String address2;
 	@Column(name = "adhaar_id", length = 16)
 	private String adhaarid;
+
+	public Date getCreate_date() {
+		return create_date;
+	}
+
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+
+	public Date getUpdate_date() {
+		return update_date;
+	}
+
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
+	}
+
+	private Date create_date;
+	private Date update_date;
+	
 
 	public Long getUserId() {
 		return userId;

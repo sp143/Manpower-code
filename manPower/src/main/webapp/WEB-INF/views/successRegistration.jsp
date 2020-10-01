@@ -19,7 +19,7 @@
         <span>Full name:</span><span>${consumer.fname}</span><br/>
         <span>E-mail:</span><span>${consumer.email}</span><br/>
         <span>Password:</span><span>${consumer.password}</span><br/>
-        <span>Birthday:</span><span>${consumer.birthday}</span><br/>
+        <span>Birthday:</span><span>${consumer.DOB}</span><br/>
         <span>Gender:</span><span>${consumer.gender}</span><br/>
         <span>Profession:</span><span>${consumer.profession}</span><br/>
     </div>

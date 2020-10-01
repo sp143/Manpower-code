@@ -17,7 +17,7 @@
 		<h2>User Registration</h2>
 		<form:form action="login" method="get" modelAttribute="login">
 			<form:label path="userName">USER NAME:</form:label>
-			<form:password path="userName" />
+			<form:input path="userName" />
 			<br />
 
 			<form:label path="passWord">PASSWORD:</form:label>
