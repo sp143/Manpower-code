@@ -15,9 +15,9 @@
 </c:if> --%>
 		<h1>${message}</h1>
 		<h2>User Registration</h2>
-		<form:form action="login" method="get" modelAttribute="login">
-			<form:label path="userName">USER NAME:</form:label>
-			<form:input path="userName" />
+		<form:form action="login" method="Post" modelAttribute="login">
+			<form:label path="email">USER NAME:</form:label>
+			<form:input path="email" />
 			<br />
 
 			<form:label path="passWord">PASSWORD:</form:label>

@@ -1,4 +1,4 @@
-package com.sp.manpwr.model;
+package com.sp.manpwr.beans;
 
 import java.sql.Date;
 
@@ -15,8 +15,9 @@ public class Consumer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	@Column
 	private String fName;
+	@Column
 	private String lName;
 	@Column(name = "email", nullable = false, length = 200)
 	private String email;

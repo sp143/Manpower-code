@@ -8,22 +8,26 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sp.manpwr.beans.Consumer;
+import com.sp.manpwr.beans.UserDetail;
 import com.sp.manpwr.dao.ConsumerRepository;
-import com.sp.manpwr.dao.LoginRepository;
+import com.sp.manpwr.dao.UserRepository;
 import com.sp.manpwr.dto.ConsumerDTO;
+import com.sp.manpwr.dto.UserCredential;
 import com.sp.manpwr.error.RecordNotFoundException;
-import com.sp.manpwr.model.Consumer;
-import com.sp.manpwr.model.Login;
 import com.sp.manpwr.util.Utility;
 
 @Service
-public class ConsumerService {
+public class UserService {
 	@Autowired
 	ConsumerRepository consumerRepository;
 	@Autowired
-	LoginRepository loginRepository;
+	UserRepository userRepository;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public List<Consumer> getAllEmployees() {
 		List<Consumer> consumers = consumerRepository.findAll();
@@ -48,17 +52,24 @@ public class ConsumerService {
 	@Transactional(rollbackOn = Exception.class)
 	public Consumer createOrUpdateConsumer(ConsumerDTO newEntity) throws RecordNotFoundException {
 		Optional<Consumer> consumer = consumerRepository.findUserByEmail(newEntity.getEmail());
-		Consumer newConsumer=null;
+		Consumer newConsumer = null;
 		if (consumer.isPresent()) {
 			newConsumer = consumer.get();
 			newConsumer.setEmail(newEntity.getEmail());
 			newConsumer.setfName(newEntity.getfName());
 			newConsumer.setlName(newEntity.getlName());
+			newConsumer.setAddress(newEntity.getAddress());
+			newConsumer.setAdhaarid(newEntity.getAdhaarid());
+			newConsumer.setProfession(newEntity.getProfession());
+			newConsumer.setDOB(Utility.stringToSQLDate(newEntity.getDOB()));
+			newConsumer.setRecord_status("ACTIVE");
+			newConsumer.setPhNo(newEntity.getPhNo());
+			newConsumer.setGender(newEntity.getGender());
 			newConsumer.setUpdate_date(Utility.utilDateToSqlDate(new Date()));
 
-			updatedConsumer = consumerRepository.save(newConsumer);
+			Consumer updatedConsumer = consumerRepository.save(newConsumer);
 
-			return newConsumer;
+			return updatedConsumer;
 		} else {
 			newConsumer = new Consumer();
 			newConsumer.setEmail(newEntity.getEmail());
@@ -75,13 +86,13 @@ public class ConsumerService {
 
 			Consumer createdConsumer = consumerRepository.save(newConsumer);
 			if (createdConsumer != null) {
-				Login login = new Login();
-				login.setEmail(newEntity.getEmail() + "-");
-				login.setPassWord(newEntity.getPassword());
+				UserDetail login = new UserDetail();
+				login.setEmail(newEntity.getEmail());
+				login.setPassWord(passwordEncoder.encode(newEntity.getPassword()));
 				login.setUserMasterId(newConsumer.getId());
 				login.setUserName(newEntity.getuName());
 				login.setUserRole(newEntity.getRole());
-				loginRepository.save(login);
+				userRepository.save(login);
 			}
 			return createdConsumer;
 		}
@@ -98,13 +109,21 @@ public class ConsumerService {
 	}
 
 	public Optional<Consumer> findUserByEmail(String email) {
-		// TODO Auto-generated method stub
 		Optional<Consumer> consumer = consumerRepository.findUserByEmail(email);
 		return consumer;
 	}
 
-	public Optional<Consumer> loginValidation(String userName, String passWord) {
-		Optional<Consumer> consumer = consumerRepository.validateLogin(userName, passWord);
+	public UserDetail findUserByLoginName(String email) {
+		UserDetail userDetails = userRepository.findUserByEmail(email).get();
+		return userDetails;
+	}
+	public void updateUserDetails(UserDetail user) {
+		userRepository.save(user);
+	}
+
+
+	public Consumer loginValidation(String userName, String passWord) {
+		Consumer consumer = consumerRepository.validateLogin(userName, passWord);
 		return consumer;
 
 	}

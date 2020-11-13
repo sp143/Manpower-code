@@ -1,4 +1,4 @@
-package com.sp.manpwr.model;
+package com.sp.manpwr.beans;
 
 import java.sql.Date;
 

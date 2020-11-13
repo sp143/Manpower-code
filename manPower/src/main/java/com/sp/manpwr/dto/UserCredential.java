@@ -5,13 +5,10 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 @Component
-public class LoginDTO {
+public class UserCredential {
 	@NotNull
 	@NotEmpty
 	private String email;
-	@NotNull
-	@NotEmpty
-	private String userName;
 	@NotNull
 	@NotEmpty
 	private String passWord;
@@ -24,13 +21,7 @@ public class LoginDTO {
 		this.email = email;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getPassWord() {
 		return passWord;

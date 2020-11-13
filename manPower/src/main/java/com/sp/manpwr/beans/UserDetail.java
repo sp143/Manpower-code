@@ -1,4 +1,6 @@
-package com.sp.manpwr.model;
+package com.sp.manpwr.beans;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Login_M")
-public class Login {
+@Table(name = "USER_M")
+public class UserDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -20,6 +22,24 @@ public class Login {
 	private String passWord;
 	private Long userMasterId;
 	private String userRole;
+	private String status;
+	private Date lastLogin;
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getUserRole() {
 		return userRole;
