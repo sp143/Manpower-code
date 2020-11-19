@@ -36,8 +36,6 @@ public class FrontController {
 		Optional<Consumer> consExist = userService.findUserByEmail(consumerdto.getEmail());
 		if (consExist.isPresent()) {
 			System.out.println("hello binding");
-			// bindingResult.rejectValue("email", "error.consumer", "This email already
-			// exists!");
 			bindingResult.rejectValue("email", "message", "This email already exists!");
 		}
 
@@ -71,25 +69,6 @@ public class FrontController {
 		return "loginPage";
 	}
 
-	/*
-	 * @RequestMapping(value = { "/login" }, method = RequestMethod.GET) public
-	 * String login(@ModelAttribute(name = "login") UserCredential loginDTO,
-	 * BindingResult bindingResult, Model model) {
-	 * 
-	 * String retu = "login"; Optional<Consumer> consExist = null; Consumer
-	 * consumer=null; try { consExist =
-	 * consumerService.loginValidation(loginDTO.getUserName(),loginDTO.getPassWord()
-	 * ); consumer=consExist.get(); } catch (Exception exe) {
-	 * model.addAttribute("message", "Loging if u have account ?"); retu =
-	 * "loginPage"; } if (consumer != null) { retu = "dashboard";
-	 * model.addAttribute("fname", consumer.getfName());
-	 * model.addAttribute("message", "welcome to Manpower Official"); } else {
-	 * System.out.println("Entered  in controller foe login =");
-	 * System.out.println(" user name for login=" + loginDTO.getUserName()); //
-	 * model.addAttribute("login", new LoginDTO()); model.addAttribute("message",
-	 * "Invalid credentials, Try again!"); retu = "loginPage"; } return retu; }
-	 */
-
 	@GetMapping({ "/", "welcome" })
 	public String welcome(Model model) {
 		return "welcome";
@@ -113,6 +92,11 @@ public class FrontController {
 		} else {
 			return new RedirectView("unauthorized-access");
 		}
+	}
+
+	@GetMapping("/session-inactive")
+	public ModelAndView getSessionErrorPage(Model model) {
+		return new ModelAndView("session-inactive");
 	}
 
 	private UserDetail getPrincipal() {

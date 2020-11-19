@@ -57,7 +57,7 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login*", "/register-user/*", "/*").permitAll()
 				.antMatchers("/register/*", "/admin/**").hasAuthority("ROLE_ADMIN").antMatchers("/user/*", "/user/**")
 				.hasAuthority("ROLE_USER").antMatchers("/admin/unauthorized-access*").anonymous().and().formLogin()
-				.loginPage("/login").usernameParameter("email").passwordParameter("passWord").defaultSuccessUrl("/register")
+				.loginPage("/login").usernameParameter("email").passwordParameter("passWord").defaultSuccessUrl("/login-success")
 				// .successHandler(myAuthenticationSuccessHandler())
 				.failureUrl("/unauthorized-access").permitAll().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/session-inactive")
