@@ -2,7 +2,7 @@ package com.sp.manpwr.util;
 
 import java.sql.Date;
 
-public class Utility {
+public class CutomUtil {
 
 	public static Date stringToSQLDate(String dateStr) {
 		Date date = Date.valueOf(dateStr);

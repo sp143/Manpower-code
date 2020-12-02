@@ -1,6 +1,8 @@
 package com.sp.manpwr.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +19,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.sp.manpwr.beans.Consumer;
+import com.sp.manpwr.beans.LoginEntity;
+import com.sp.manpwr.beans.RoleM;
 import com.sp.manpwr.beans.UserDetail;
-import com.sp.manpwr.dto.ConsumerDTO;
 import com.sp.manpwr.dto.UserCredential;
+import com.sp.manpwr.dto.UserDTO;
+import com.sp.manpwr.service.LoginService;
+import com.sp.manpwr.service.RoleService;
 import com.sp.manpwr.service.UserService;
+import com.sp.manpwr.util.CutomUtil;
 
 @Controller
 public class FrontController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	LoginService loginService;
+	@Autowired
+	RoleService roleService;
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public String createUser(@Validated @ModelAttribute(name = "consumer") ConsumerDTO consumerdto,
-			BindingResult bindingResult, Model model) {
+	public String createUser(@Validated @ModelAttribute(name = "user") UserDTO consumerdto, BindingResult bindingResult,
+			Model model) {
 		String retu = "registration";
-		Optional<Consumer> consExist = userService.findUserByEmail(consumerdto.getEmail());
-		if (consExist.isPresent()) {
+		Optional<UserDetail> userExist = userService.findUserByEmail(consumerdto.getEmail());
+		if (userExist.isPresent()) {
 			System.out.println("hello binding");
 			bindingResult.rejectValue("email", "message", "This email already exists!");
 		}
@@ -45,15 +55,15 @@ public class FrontController {
 		} else {
 			try {
 
-				Consumer newDto = userService.createOrUpdateConsumer(consumerdto);
-				ConsumerDTO consDTO = new ConsumerDTO();
+				UserDetail newDto = userService.createOrUpdateConsumer(consumerdto);
+				UserDTO consDTO = new UserDTO();
 				consDTO.setfName(newDto.getfName());
 
 				model.addAttribute("message", "Consumer has been registered successfully!");
-				model.addAttribute("consumer", consDTO);
+				// model.addAttribute("consumer", consDTO);
 				retu = "successRegistration";
 			} catch (Exception e) {
-				model.addAttribute("message", "Problem in registration");
+				model.addAttribute("message", "Problem in registration try after some time !");
 				retu = "error";
 			}
 		}
@@ -76,22 +86,37 @@ public class FrontController {
 
 	@GetMapping({ "/register" })
 	public String registrationPage(Model model) {
-		model.addAttribute("consumer", new ConsumerDTO());
+		List<RoleM> roles = roleService.getAllRoles();
+		List<String> listOfDates = new ArrayList<String>();
+		for (RoleM rl : roles) {
+			listOfDates.add(rl.getRoleName());
+		}
+
+		model.addAttribute("user", new UserDTO());
+		model.addAttribute("listOfRoles", listOfDates);
 		return "registration";
 	}
 
 	@RequestMapping("/login-success")
 	public RedirectView getLogInSuccessPage(Model model) {
-		UserDetail user = getPrincipal();
-		user.setLastLogin(new Date());
-		userService.updateUserDetails(user);
-		if (user.getUserRole().equals("ADMIN")) {
-			return new RedirectView("admin/");
-		} else if (user.getUserRole().equals("USER")) {
-			return new RedirectView("user/");
+		String redirectPath = "unauthorized-access";
+		LoginEntity login = getPrincipal();
+		login.setLastLogin(CutomUtil.utilDateToSqlDate(new Date()));
+		loginService.updateLoginDetails(login);
+		if (login.getRoleM().equals("ADMIN")) {
+			redirectPath = "admin_dash";
+		} else if (login.getRoleM().equals("USER")) {
+			redirectPath = "/user";
 		} else {
-			return new RedirectView("unauthorized-access");
+			redirectPath = "unauthorized-access";
 		}
+
+		return new RedirectView(redirectPath);
+	}
+
+	@GetMapping("/admin_dash")
+	public ModelAndView sentDashBordAdmin(Model model) {
+		return new ModelAndView("dashboard");
 	}
 
 	@GetMapping("/session-inactive")
@@ -99,15 +124,15 @@ public class FrontController {
 		return new ModelAndView("session-inactive");
 	}
 
-	private UserDetail getPrincipal() {
-		UserDetail user = null;
+	private LoginEntity getPrincipal() {
+		LoginEntity login = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
-			user = userService.findUserByLoginName(((UserDetails) principal).getUsername());
+			login = loginService.findUserByLoginName(((UserDetails) principal).getUsername());
 		} else {
-			user = (UserDetail) principal;
+			login = (LoginEntity) principal;
 		}
-		return user;
+		return login;
 	}
 
 	@RequestMapping(value = { "/error" }, method = RequestMethod.GET)

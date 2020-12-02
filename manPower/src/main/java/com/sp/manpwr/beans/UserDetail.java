@@ -1,6 +1,6 @@
 package com.sp.manpwr.beans;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,39 +15,44 @@ public class UserDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column
+	private String fName;
+	@Column
+	private String lName;
+	@Column(name = "email", nullable = false, length = 200)
 	private String email;
-	@Column(name = "userName", nullable = false, unique = true)
-	private String userName;
-	@Column(name = "passWord", nullable = false, unique = true)
-	private String passWord;
-	private Long userMasterId;
-	private String userRole;
-	private String status;
-	private Date lastLogin;
+	@Column(name = "phNo", length = 13)
+	private String phNo;
+	@Column(name = "Address", length = 50)
+	private String address;
+	@Column(name = "adhaar_id", length = 16)
+	private String adhaarid;
+	private Date DOB;
+	@Column(name = "Gender")
+	private String Gender;
+	private String profession;
+	@Column(name = "RECORD_STATUS")
+	private String record_status;
+	private Date create_date;
 
-	public Date getLastLogin() {
-		return lastLogin;
+
+	public Date getCreate_date() {
+		return create_date;
 	}
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
 	}
 
-	public String getStatus() {
-		return status;
+	public Date getUpdate_date() {
+		return update_date;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
 	}
 
-	public String getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
+	private Date update_date;
 
 	public Long getId() {
 		return id;
@@ -55,6 +60,22 @@ public class UserDetail {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getlName() {
+		return lName;
+	}
+
+	public void setlName(String lName) {
+		this.lName = lName;
 	}
 
 	public String getEmail() {
@@ -65,27 +86,60 @@ public class UserDetail {
 		this.email = email;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getPhNo() {
+		return phNo;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setPhNo(String phNo) {
+		this.phNo = phNo;
 	}
 
-	public String getPassWord() {
-		return passWord;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setPassWord(String passWord) {
-		this.passWord = passWord;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public Long getUserMasterId() {
-		return userMasterId;
+	public String getAdhaarid() {
+		return adhaarid;
 	}
 
-	public void setUserMasterId(Long long1) {
-		this.userMasterId = long1;
+	public void setAdhaarid(String adhaarid) {
+		this.adhaarid = adhaarid;
 	}
+
+	public Date getDOB() {
+		return DOB;
+	}
+
+	public void setDOB(Date dOB) {
+		DOB = dOB;
+	}
+
+	public String getGender() {
+		return Gender;
+	}
+
+	public void setGender(String gender) {
+		Gender = gender;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public String getRecord_status() {
+		return record_status;
+	}
+
+	public void setRecord_status(String record_status) {
+		this.record_status = record_status;
+	}
+
 }

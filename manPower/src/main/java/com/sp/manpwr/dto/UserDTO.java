@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsumerDTO {
+public class UserDTO {
 	@NotNull
 	@NotEmpty
 	private String fName;

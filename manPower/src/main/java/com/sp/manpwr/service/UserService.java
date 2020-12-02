@@ -11,36 +11,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.sp.manpwr.beans.Consumer;
+import com.sp.manpwr.beans.LoginEntity;
+import com.sp.manpwr.beans.RoleM;
 import com.sp.manpwr.beans.UserDetail;
-import com.sp.manpwr.dao.ConsumerRepository;
+import com.sp.manpwr.dao.LoginRepository;
 import com.sp.manpwr.dao.UserRepository;
-import com.sp.manpwr.dto.ConsumerDTO;
-import com.sp.manpwr.dto.UserCredential;
+import com.sp.manpwr.dto.UserDTO;
 import com.sp.manpwr.error.RecordNotFoundException;
-import com.sp.manpwr.util.Utility;
+import com.sp.manpwr.util.CutomUtil;
 
 @Service
 public class UserService {
 	@Autowired
-	ConsumerRepository consumerRepository;
-	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	LoginRepository loginRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	public List<Consumer> getAllEmployees() {
-		List<Consumer> consumers = consumerRepository.findAll();
+	public List<UserDetail> getAllEmployees() {
+		List<UserDetail> consumers = userRepository.findAll();
 		if (consumers.size() > 0) {
 			return consumers;
 		} else {
-			return new ArrayList<Consumer>();
+			return new ArrayList<UserDetail>();
 		}
 
 	}
 
-	public Consumer getConsumerById(Long id) throws RecordNotFoundException {
-		Optional<Consumer> consumers = consumerRepository.findById(id);
+	public UserDetail getConsumerById(Long id) throws RecordNotFoundException {
+		Optional<UserDetail> consumers = userRepository.findById(id);
 
 		if (consumers.isPresent()) {
 			return consumers.get();
@@ -50,81 +50,84 @@ public class UserService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public Consumer createOrUpdateConsumer(ConsumerDTO newEntity) throws RecordNotFoundException {
-		Optional<Consumer> consumer = consumerRepository.findUserByEmail(newEntity.getEmail());
-		Consumer newConsumer = null;
-		if (consumer.isPresent()) {
-			newConsumer = consumer.get();
-			newConsumer.setEmail(newEntity.getEmail());
-			newConsumer.setfName(newEntity.getfName());
-			newConsumer.setlName(newEntity.getlName());
-			newConsumer.setAddress(newEntity.getAddress());
-			newConsumer.setAdhaarid(newEntity.getAdhaarid());
-			newConsumer.setProfession(newEntity.getProfession());
-			newConsumer.setDOB(Utility.stringToSQLDate(newEntity.getDOB()));
-			newConsumer.setRecord_status("ACTIVE");
-			newConsumer.setPhNo(newEntity.getPhNo());
-			newConsumer.setGender(newEntity.getGender());
-			newConsumer.setUpdate_date(Utility.utilDateToSqlDate(new Date()));
+	public UserDetail createOrUpdateConsumer(UserDTO newEntity) throws RecordNotFoundException {
+		Optional<UserDetail> user = userRepository.findUserByEmail(newEntity.getEmail());
+		UserDetail newUser = null;
+		if (user.isPresent()) {
+			newUser = user.get();
+			newUser.setEmail(newEntity.getEmail());
+			newUser.setfName(newEntity.getfName());
+			newUser.setlName(newEntity.getlName());
+			newUser.setAddress(newEntity.getAddress());
+			newUser.setAdhaarid(newEntity.getAdhaarid());
+			newUser.setProfession(newEntity.getProfession());
+			newUser.setDOB(CutomUtil.stringToSQLDate(newEntity.getDOB()));
+			newUser.setRecord_status("ACTIVE");
+			newUser.setPhNo(newEntity.getPhNo());
+			newUser.setGender(newEntity.getGender());
+			newUser.setUpdate_date(CutomUtil.utilDateToSqlDate(new Date()));
 
-			Consumer updatedConsumer = consumerRepository.save(newConsumer);
+			UserDetail updatedConsumer = userRepository.save(newUser);
 
 			return updatedConsumer;
 		} else {
-			newConsumer = new Consumer();
-			newConsumer.setEmail(newEntity.getEmail());
-			newConsumer.setfName(newEntity.getfName());
-			newConsumer.setlName(newEntity.getlName());
-			newConsumer.setAddress(newEntity.getAddress());
-			newConsumer.setAdhaarid(newEntity.getAdhaarid());
-			newConsumer.setProfession(newEntity.getProfession());
-			newConsumer.setDOB(Utility.stringToSQLDate(newEntity.getDOB()));
-			newConsumer.setRecord_status("ACTIVE");
-			newConsumer.setPhNo(newEntity.getPhNo());
-			newConsumer.setGender(newEntity.getGender());
-			newConsumer.setCreate_date(Utility.utilDateToSqlDate(new Date()));
+			newUser = new UserDetail();
+			newUser.setEmail(newEntity.getEmail());
+			newUser.setfName(newEntity.getfName());
+			newUser.setlName(newEntity.getlName());
+			newUser.setAddress(newEntity.getAddress());
+			newUser.setAdhaarid(newEntity.getAdhaarid());
+			newUser.setProfession(newEntity.getProfession());
+			newUser.setDOB(CutomUtil.stringToSQLDate(newEntity.getDOB()));
+			newUser.setRecord_status("ACTIVE");
+			newUser.setPhNo(newEntity.getPhNo());
+			newUser.setGender(newEntity.getGender());
+			newUser.setCreate_date(CutomUtil.utilDateToSqlDate(new Date()));
 
-			Consumer createdConsumer = consumerRepository.save(newConsumer);
-			if (createdConsumer != null) {
-				UserDetail login = new UserDetail();
+			UserDetail createdUser = userRepository.save(newUser);
+			if (createdUser != null) {
+				
+				LoginEntity login = new LoginEntity();
+				//login.setRole(.getRole();
 				login.setEmail(newEntity.getEmail());
-				login.setPassWord(passwordEncoder.encode(newEntity.getPassword()));
-				login.setUserMasterId(newConsumer.getId());
-				login.setUserName(newEntity.getuName());
-				login.setUserRole(newEntity.getRole());
-				userRepository.save(login);
+				login.setPass_word(passwordEncoder.encode(newEntity.getPassword()));
+				login.setUser_master_id(createdUser.getId());
+				login.setUser_name(newEntity.getuName());
+				login.setRecord_status("ÄCTIVE");
+				
+				loginRepository.save(login);
 			}
-			return createdConsumer;
+			return createdUser;
 		}
 	}
 
 	public void deleteConsumerById(Long id) throws RecordNotFoundException {
-		Optional<Consumer> consumer = consumerRepository.findById(id);
+		Optional<UserDetail> consumer = userRepository.findById(id);
 
 		if (consumer.isPresent()) {
-			consumerRepository.deleteById(id);
+			userRepository.deleteById(id);
 		} else {
 			throw new RecordNotFoundException("No employee record exist for given id");
 		}
 	}
 
-	public Optional<Consumer> findUserByEmail(String email) {
-		Optional<Consumer> consumer = consumerRepository.findUserByEmail(email);
-		return consumer;
+	public Optional<UserDetail> findUserByEmail(String email) {
+		Optional<UserDetail> user = userRepository.findUserByEmail(email);
+		return user;
 	}
 
 	public UserDetail findUserByLoginName(String email) {
 		UserDetail userDetails = userRepository.findUserByEmail(email).get();
 		return userDetails;
 	}
+
 	public void updateUserDetails(UserDetail user) {
 		userRepository.save(user);
 	}
 
-
-	public Consumer loginValidation(String userName, String passWord) {
-		Consumer consumer = consumerRepository.validateLogin(userName, passWord);
-		return consumer;
+	public UserDetail loginValidation(String userName, String passWord) {
+		UserDetail user = userRepository.validateLogin(userName, passWord);
+		return user;
 
 	}
 }

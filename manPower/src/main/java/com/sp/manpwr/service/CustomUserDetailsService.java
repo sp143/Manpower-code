@@ -12,43 +12,41 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sp.manpwr.beans.UserDetail;
+import com.sp.manpwr.beans.LoginEntity;
 import com.sp.manpwr.dto.UserCredential;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService{
- 
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-    UserCredential userCredential;
+public class CustomUserDetailsService implements UserDetailsService {
 
-    @Transactional(readOnly=true)
-    public UserDetails loadUserByUsername(String ssoId)
-            throws UsernameNotFoundException {    	
-    	System.out.println("ssoId::" +ssoId);
-        UserDetail user = userService.findUserByLoginName(ssoId);
-        boolean credentialValid;
-		
-		  userCredential.setEmail(user.getEmail());
-		  userCredential.setPassWord(user.getPassWord());
-		 
-        if (user.getStatus().equals("INACTIVE")) {
+	@Autowired
+	private LoginService loginService;
+
+	@Autowired
+	UserCredential userCredential;
+
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String ssoId) throws UsernameNotFoundException {
+		System.out.println("ssoId::" + ssoId);
+		LoginEntity login = loginService.findUserByLoginName(ssoId);
+		boolean credentialValid;
+
+		userCredential.setEmail(login.getEmail());
+		userCredential.setPassWord(login.getPass_word());
+
+		if (login.getRecord_status().equals("INACTIVE")) {
 			credentialValid = false;
 		} else {
 			credentialValid = true;
 		}
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassWord(),
-				user.getStatus().equals("ACTIVE"), credentialValid, credentialValid, credentialValid,
-				getGrantedAuthorities(user));
-   }
+		return new org.springframework.security.core.userdetails.User(login.getEmail(), login.getPass_word(),
+				login.getRecord_status().equals("ACTIVE"), credentialValid, credentialValid, credentialValid,
+				getGrantedAuthorities(login));
+	}
 
-    
-   private List<GrantedAuthority> getGrantedAuthorities(UserDetail user){
-       List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-       authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getUserRole()));
-       System.out.print("authorities :"+authorities);
-       return authorities;
-   }
+	private List<GrantedAuthority> getGrantedAuthorities(LoginEntity login) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + login.getRoleM().trim()));
+		System.out.print("authorities :" + authorities);
+		return authorities;
+	}
 }
