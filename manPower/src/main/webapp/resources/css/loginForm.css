@@ -1,6 +1,6 @@
 Body {
 	font-family: Calibri, Helvetica, sans-serif;
-	background-color: aqua;
+	background-color: white;
 }
 
 button {
@@ -14,7 +14,7 @@ button {
 }
 
 form {
-	border: 3px solid #f1f1f1;
+	border: 3px light #f1f1f1;
 }
 
 input[type=text], input[type=password] {
@@ -37,7 +37,9 @@ button:hover {
 }
 
 .container {
-	
-	padding: 25px;
+	margin: auto;
+	width: 30%;
+	border: 3px solid green;
+	padding: 10px;
 	background-color: lightblue;
 }

@@ -7,7 +7,7 @@
 <title>ManPower</title>
 </head>
 <body>
-<h1>Welcome</h1>
+<h1>Welcomeasdas</h1>
 <a href="/login">Login</a><a href="/register">Registration</a>
 </body>
 </html>

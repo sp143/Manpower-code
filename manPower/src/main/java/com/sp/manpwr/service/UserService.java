@@ -86,15 +86,15 @@ public class UserService {
 
 			UserDetail createdUser = userRepository.save(newUser);
 			if (createdUser != null) {
-				
+
 				LoginEntity login = new LoginEntity();
-				//login.setRole(.getRole();
+				login.setRoleM(newEntity.getRole());
 				login.setEmail(newEntity.getEmail());
 				login.setPass_word(passwordEncoder.encode(newEntity.getPassword()));
 				login.setUser_master_id(createdUser.getId());
 				login.setUser_name(newEntity.getuName());
 				login.setRecord_status("ÄCTIVE");
-				
+
 				loginRepository.save(login);
 			}
 			return createdUser;

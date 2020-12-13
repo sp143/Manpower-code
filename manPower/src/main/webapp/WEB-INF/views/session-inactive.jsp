@@ -68,7 +68,7 @@
 							</div>
 						</div>
 						<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
-							Copyright © 2020 Man Power. All rights reserved. Dashboard by :
+							Copyright © 2020 Man Power. All rights reserved, by :
 							Praveen.V</div>
 					</div>
 				</div>

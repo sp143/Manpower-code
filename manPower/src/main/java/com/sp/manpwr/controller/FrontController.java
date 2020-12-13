@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -117,6 +118,11 @@ public class FrontController {
 	@GetMapping("/admin_dash")
 	public ModelAndView sentDashBordAdmin(Model model) {
 		return new ModelAndView("dashboard");
+	}
+
+	@GetMapping("/forgotPassword")
+	public ModelAndView showForgotPWD(Model model) {
+		return new ModelAndView("forgotPassword");
 	}
 
 	@GetMapping("/session-inactive")
