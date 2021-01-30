@@ -11,19 +11,21 @@ import javax.persistence.Table;
 public class RoleM {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long Role_id;
 	private String roleName;
 	private String flag1;
 	private String flag2;
 	private String flag3;
 	private String record_status;
 
-	public Long getId() {
-		return id;
+	
+
+	public Long getRole_id() {
+		return Role_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setRole_id(Long role_id) {
+		Role_id = role_id;
 	}
 
 	public String getRoleName() {

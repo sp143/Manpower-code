@@ -68,7 +68,7 @@ uri="http://www.springframework.org/tags/form"%>
 <link rel="stylesheet" href="../assets/vendor/css/bootstrap.min.css">
 <link href="../assets/vendor/fonts/circular-std/style.css"
 	rel="stylesheet">
-<link href="../resources/css/style.css" rel="stylesheet" />
+<link href="../resources/css/loginstyle.css" rel="stylesheet" />
 <link rel="stylesheet"
 	href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
 <style>
@@ -98,6 +98,7 @@ body {
 					src="../assets/img/logo.png" alt="logo"></a><span
 					class="splash-description">Please enter your user
 					information.</span>
+					<h4><red>${message}</red></h4>
 			</div>
 			<div class="card-body">
 				<form:form action="login" method="Post" modelAttribute="login">

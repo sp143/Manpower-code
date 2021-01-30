@@ -29,15 +29,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 		System.out.println("ssoId::" + ssoId);
 		LoginEntity login = loginService.findUserByLoginName(ssoId);
 		boolean credentialValid;
-
-		userCredential.setEmail(login.getEmail());
-		userCredential.setPassWord(login.getPass_word());
-
-		if (login.getRecord_status().equals("INACTIVE")) {
+		if (login != null) {
+			userCredential.setEmail(login.getEmail());
+			userCredential.setPassWord(login.getPass_word());
+		}
+		if (login == null || login.getRecord_status().equals("INACTIVE")) {
 			credentialValid = false;
 		} else {
 			credentialValid = true;
 		}
+
 		return new org.springframework.security.core.userdetails.User(login.getEmail(), login.getPass_word(),
 				login.getRecord_status().equals("ACTIVE"), credentialValid, credentialValid, credentialValid,
 				getGrantedAuthorities(login));
@@ -45,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	private List<GrantedAuthority> getGrantedAuthorities(LoginEntity login) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + login.getRoleM().trim()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + login.getRoleM().getRoleName().trim()));
 		System.out.print("authorities :" + authorities);
 		return authorities;
 	}

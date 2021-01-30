@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,18 +21,16 @@ public class LoginEntity {
 	private String user_name;
 	private Long user_master_id;
 	private Date lastLogin;
-	/*
-	 * @OneToMany
-	 * 
-	 * @JoinColumn(name = "id", updatable = false)
-	 */
-	private String roleM;
 
-	public String getRoleM() {
+	@OneToOne
+	@JoinColumn(name = "Role_id", updatable = true)
+	private RoleM roleM;
+
+	public RoleM getRoleM() {
 		return roleM;
 	}
 
-	public void setRoleM(String roleM) {
+	public void setRoleM(RoleM roleM) {
 		this.roleM = roleM;
 	}
 

@@ -15,7 +15,9 @@
 </head>
 <body>
     <div align="center">
-        <h2>Registration Succeeded!={$message}</h2>
+        <h2>${message}</h2>
+        <a href="/login">Login form</a>
+        <a href="/welcome">Home</a>
     </div>
 </body>
 </html>

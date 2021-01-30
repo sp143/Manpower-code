@@ -135,4 +135,12 @@ public class UserDTO {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "UserDTO [fName=" + fName + ", lName=" + lName + ", email=" + email + ", phNo=" + phNo + ", uName="
+				+ uName + ", password=" + password + ", address=" + address + ", adhaarid=" + adhaarid + ", DOB=" + DOB
+				+ ", Gender=" + Gender + ", checkboxcondition=" + checkboxcondition + ", role=" + role + ", profession="
+				+ profession + "]";
+	}
+
 }

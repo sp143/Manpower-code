@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sp.manpwr.beans.LoginEntity;
-import com.sp.manpwr.beans.RoleM;
 import com.sp.manpwr.beans.UserDetail;
 import com.sp.manpwr.dao.LoginRepository;
+import com.sp.manpwr.dao.RoleRepository;
 import com.sp.manpwr.dao.UserRepository;
 import com.sp.manpwr.dto.UserDTO;
 import com.sp.manpwr.error.RecordNotFoundException;
@@ -28,6 +28,8 @@ public class UserService {
 	LoginRepository loginRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	RoleRepository roleRepo;
 
 	public List<UserDetail> getAllEmployees() {
 		List<UserDetail> consumers = userRepository.findAll();
@@ -86,14 +88,14 @@ public class UserService {
 
 			UserDetail createdUser = userRepository.save(newUser);
 			if (createdUser != null) {
-
+				System.out.println(newEntity.toString());
 				LoginEntity login = new LoginEntity();
-				login.setRoleM(newEntity.getRole());
+				login.setRoleM(roleRepo.getbyName(newEntity.getProfession()));
 				login.setEmail(newEntity.getEmail());
 				login.setPass_word(passwordEncoder.encode(newEntity.getPassword()));
 				login.setUser_master_id(createdUser.getId());
 				login.setUser_name(newEntity.getuName());
-				login.setRecord_status("ÄCTIVE");
+				login.setRecord_status("ACTIVE");
 
 				loginRepository.save(login);
 			}

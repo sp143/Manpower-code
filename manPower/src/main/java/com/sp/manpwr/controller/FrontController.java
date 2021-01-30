@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.sp.manpwr.beans.LoginEntity;
 import com.sp.manpwr.beans.RoleM;
 import com.sp.manpwr.beans.UserDetail;
+import com.sp.manpwr.dao.Login;
 import com.sp.manpwr.dto.UserCredential;
 import com.sp.manpwr.dto.UserDTO;
 import com.sp.manpwr.service.LoginService;
@@ -85,6 +86,12 @@ public class FrontController {
 		return "welcome";
 	}
 
+	@ResponseBody
+	@GetMapping("welcomeRest")
+	public String welcomeRest(Model model) {
+		return "welcome";
+	}
+
 	@GetMapping({ "/register" })
 	public String registrationPage(Model model) {
 		List<RoleM> roles = roleService.getAllRoles();
@@ -104,9 +111,9 @@ public class FrontController {
 		LoginEntity login = getPrincipal();
 		login.setLastLogin(CutomUtil.utilDateToSqlDate(new Date()));
 		loginService.updateLoginDetails(login);
-		if (login.getRoleM().equals("ADMIN")) {
+		if (login.getRoleM().getRoleName().equals("ADMIN")) {
 			redirectPath = "admin_dash";
-		} else if (login.getRoleM().equals("USER")) {
+		} else if (login.getRoleM().getRoleName().equals("USER")) {
 			redirectPath = "/user";
 		} else {
 			redirectPath = "unauthorized-access";
@@ -118,6 +125,13 @@ public class FrontController {
 	@GetMapping("/admin_dash")
 	public ModelAndView sentDashBordAdmin(Model model) {
 		return new ModelAndView("dashboard");
+	}
+
+	@GetMapping("/login_failed")
+	public String loginFailed(Model model) {
+		model.addAttribute("message", "Invalid credentials..!");
+		model.addAttribute("login", new Login());
+		return "loginPage";
 	}
 
 	@GetMapping("/forgotPassword")
