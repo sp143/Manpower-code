@@ -38,7 +38,7 @@ public class FrontController {
 	UserService userService;
 	@Autowired
 	LoginService loginService;
-	@Autowired
+	@Autowired 
 	RoleService roleService;
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
@@ -129,6 +129,8 @@ public class FrontController {
 
 	@GetMapping("/login_failed")
 	public String loginFailed(Model model) {
+		model.addAttribute("message", "Invalid credentials..!");
+		model.addAttribute("message", "Invalid credentials..!");
 		model.addAttribute("message", "Invalid credentials..!");
 		model.addAttribute("login", new Login());
 		return "loginPage";
