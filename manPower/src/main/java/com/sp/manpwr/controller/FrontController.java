@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.sp.manpwr.beans.LoginEntity;
 import com.sp.manpwr.beans.RoleM;
 import com.sp.manpwr.beans.UserDetail;
-import com.sp.manpwr.dao.Login;
+import com.sp.manpwr.dto.Login;
 import com.sp.manpwr.dto.UserCredential;
 import com.sp.manpwr.dto.UserDTO;
 import com.sp.manpwr.service.LoginService;
@@ -129,8 +129,6 @@ public class FrontController {
 
 	@GetMapping("/login_failed")
 	public String loginFailed(Model model) {
-		model.addAttribute("message", "Invalid credentials..!");
-		model.addAttribute("message", "Invalid credentials..!");
 		model.addAttribute("message", "Invalid credentials..!");
 		model.addAttribute("login", new Login());
 		return "loginPage";
